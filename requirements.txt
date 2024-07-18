@@ -1,0 +1,5 @@
+Python 3.8
+PyTorch = 1.8.0 (with corresponding CUDA version)
+Pandas = 1.4.0
+Numpy = 1.22.2
+PyEMD = 1.2.1
