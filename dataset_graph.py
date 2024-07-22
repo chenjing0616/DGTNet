@@ -59,9 +59,6 @@ def pad_array(array, shape):
 
 
 def construct_DGTNet_dataset(graph_list, label_list, normalization_require=False):
-    """
-    construct a TAST dataset with apply the class property to each elements.
-    """
     assert isinstance(graph_list, list)
     assert isinstance(label_list, list)
     output = []
