@@ -29,7 +29,7 @@ class DGTNet_normalized_Graph:
         self.graph_name = graph['date']
         self.label = label
         self.node_features = graph['node_feat']
-        self.imf_matrices_dict = graph['imf_matries_dict']   # 5个228*228的邻接矩阵，所以论文里的公式是求和
+        self.imf_matrices_dict = graph['imf_matries_dict']   
         self.adjacency_matrix = graph['adj_mat']
         self.local_max_vec, self.local_min_vec = graph['node_local_MAX'], graph['node_local_MIN']
         self.global_max_vec, self.global_min_vec = graph['node_global_MAX'], graph['node_global_MIN']
