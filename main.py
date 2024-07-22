@@ -11,14 +11,14 @@ from utils import DGTNet_parameter, loss_function, calculate_loss
 from sklearn import metrics
 import torch.nn.functional as F
 from sklearn.metrics import mean_squared_error
-# torch.backends.cuda.max_memory_split = 128
 
-# 保存模型
+
+
 def save_model(model, path):
     torch.save(model.state_dict(), path)
     print("模型已保存至:", path)
 
-# 计算RMSE
+
 def calculate_rmse(y_true, y_pred):
     mse = np.mean((y_pred - y_true) ** 2)
     rmse = np.sqrt(mse)
@@ -30,12 +30,12 @@ def calculate_mae(y_true, y_pred):
 # MAPE
 def calculate_mape(y_true, y_pred):
     absolute_error = np.abs(y_pred - y_true)
-    relative_error = absolute_error / (np.abs(y_true) + 1)  # 添加一个小的常数，避免除零错误
+    relative_error = absolute_error / (np.abs(y_true) + 1) 
     mape = np.mean(relative_error)
     return mape
 
 
-class KOI_model_train_test_interface():    # 定义的接口
+class KOI_model_train_test_interface(): 
     def __init__(self, DGTNet_model, model_params:dict, train_params:dict) -> None:
         self.DGTNet_model = DGTNet_model
         self.DGTNet_model = self.DGTNet_model.to(train_params['device'])    # send the model to GPU
@@ -46,7 +46,6 @@ class KOI_model_train_test_interface():    # 定义的接口
 
     def import_dataset(self, dataset) -> None:
         # import the dataset
-        # 划分比列，直接写索引分比较好
         train_valid_split_ratio = 0.2
         num_workers = 0   # 20
         train_valid_dataset, self.test_dataset = train_test_split(dataset, test_size=train_valid_split_ratio, shuffle=True)  # False
@@ -60,28 +59,7 @@ class KOI_model_train_test_interface():    # 定义的接口
                                        collate_fn=graph_collate_func_DGTNet_normalization_require, shuffle=True,
                                        drop_last=True, num_workers=num_workers, pin_memory=False)
 
-    def calculate_number_of_parameter(self) -> int:
-        model_parameters = filter(lambda p: p.requires_grad, self.DGTNet_model.parameters())
-        total_parameters = sum([np.prod(p.size()) for p in model_parameters])
-        print("==========total_parameters==========")
-        print("总模型参数量:", total_parameters)
-        return int(sum([np.prod(p.size()) for p in model_parameters]))
 
-    def view_train_params(self):
-        # view the training parameters
-        for key, value in train_params.items():
-            print(key, ":", value)
-        print("==========train_params==========")
-        print("训练参数: ",train_params)
-        return self.train_params
-    
-    def view_model_params(self):
-        # view the model parameters
-        for key, value in model_params.items():
-            print(key, ":", value)
-        print("==========model_params==========")
-        print("模型参数: ",model_params)
-        return self.model_params
 
     def train_model(self) -> None:
         # training start
@@ -124,7 +102,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(args)
 
-    DGTNet_parameters = DGTNet_parameter(args.dataset)    # 添加参数
+    DGTNet_parameters = DGTNet_parameter(args.dataset)  
     model_params, train_params = DGTNet_parameters.parameters()
 
     ## Check GPU is available
@@ -135,7 +113,7 @@ if __name__ == '__main__':
     data_graph, data_label = generate_data(
         n_lookback_days=12,
         n_lookforward_days=12,
-        adj_mat_method='correlation',       # 皮尔逊系数，使用相关性方法来计算节点之间的连接权重
+        adj_mat_method='correlation',       
         use_tqdm=True
         )
 
@@ -145,22 +123,19 @@ if __name__ == '__main__':
 
     ## main train and test
     DGTNet_model = make_DGTNet_model(**model_params)
-    model_interface = KOI_model_train_test_interface(DGTNet_model, model_params, train_params)      # 一个接口
+    model_interface = KOI_model_train_test_interface(DGTNet_model, model_params, train_params)    
     model_interface.import_dataset(dataset=dataset)
     model_interface.train_model()
     model_interface.test_model()
-    model_interface.calculate_number_of_parameter()
-    model_interface.view_model_params()
-    model_interface.view_train_params()
 
 
-    # 测试数据集
+
     num_workers = 0
     test_loader = DataLoader(dataset=model_interface.test_dataset, batch_size=train_params['batch_size'],
                              collate_fn=graph_collate_func_DGTNet_normalization_require, shuffle=False,
                              drop_last=True, num_workers=num_workers, pin_memory=False)
 
-    # 测试模型
+
     model_interface.DGTNet_model.eval()
     predictions = []
     targets = []
@@ -192,7 +167,6 @@ if __name__ == '__main__':
     print('predictions.shape',predictions.shape)
     print('targets.shape',targets.shape)
 
-    # 计算RMSE
     rmse = calculate_rmse(targets, predictions)
     print("RMSE:", rmse)
     mae = calculate_mae(targets, predictions)
