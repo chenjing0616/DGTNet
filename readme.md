@@ -1,22 +1,26 @@
-# DGTNet:Dynamic Graph Attention Transformer Network for Traffic Flow Forecasting 
+# DGTnet:Dynamic Graph Attention Transformer Network for Traffic Flow Forecasting
 ![Python 3.8](https://img.shields.io/badge/Python-3.8-green.svg?style=plastic)
 ![PyTorch 1.8](https://img.shields.io/badge/PyTorch%20-%23EE4C2C.svg?style=plastic)
 
+The official implementation of the DGTNet.
+
 <p align='center'>
-  <img src="DGTNet.png" alt="architecture" width="600"/>
+<image src="src/TSAT.png" alt="architecture" width="600"/>
 </p>
 
-
 ## Code
-- `main.py` : main DGTNet model interface with training and testing
-- `DGT.py` : with DGTNet class implementation
+- `main.py` : main TSAT model interface with training and testing
+- `TSAT.py` : with TSAT class implementation
 - `utils.py` : utility functions and dataset parameter
-- `dataset_DGTNet.py` : generate graph from dataset
+- `dataset_TSAT_ETTm1_48.py` : generate graph from dataset ETTm1
 
-### Dataset
-The traffic data files for Los Angeles (METR-LA) and the Bay Area (PEMS-BAY), i.e., `metr-la.h5` and `pems-bay.h5`, are available at [Google Drive](https://drive.google.com/open?id=10FOTa6HXPqX8Pf5WRoRwcFnW9BrNZEIX) or [Baidu Yun](https://pan.baidu.com/s/14Yy9isAIZYdU__OYEQGa_g), and should be
-put into the `data/` folder.
+## Data Preparation
 
+### ETT dataset
+Download the Electricity Transformer Temperature Dataset from https://github.com/zhouhaoyi/ETDataset. Uncompress them and move the .csv to the `Data` folder.
+
+### Multivariate Time series Data sets
+The Electricity consumption dataset can be found on https://github.com/laiguokun/multivariate-time-series-data.
 
 ## Model parameters
 The parameters setting can be found in `utils.py`.
@@ -38,11 +42,10 @@ The parameters setting can be found in `utils.py`.
 - Numpy = 1.22.2
 - PyEMD = 1.2.1
 
-Dependency can be installed using the following command:
+Dependencies can be installed using the following command:
 ```bash
 pip install -r requirements.txt
 ```
 
-
 ## Contact
-If you have any questions, please feel free to contact Chen jing (Email: 13891739600@163.com).
+If you have any questions, please feel free to contact William Ng (Email: william.ng@koiinvestments.com).
